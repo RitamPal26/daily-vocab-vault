@@ -1,7 +1,9 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Facebook, Twitter, Instagram, Heart, Book, Mail } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Heart, Book, Mail, Trophy } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return <footer className="bg-secondary mt-16 py-12">
@@ -37,6 +39,10 @@ const Footer = () => {
             <Link to="/about" className="hover:text-foreground transition-colors">
               About
             </Link>
+            <Link to="/achievements" className="hover:text-foreground transition-colors flex items-center gap-1">
+              <Trophy className="h-3 w-3" />
+              <span>Achievements</span>
+            </Link>
             <Link to="/privacy" className="hover:text-foreground transition-colors">
               Privacy Policy
             </Link>
@@ -49,7 +55,7 @@ const Footer = () => {
           </div>
           
           <div className="mt-8 flex items-center gap-1 text-sm text-muted-foreground">
-            <span>© {currentYear} Lexicon Daily. Made with</span>
+            <span>© {currentYear} Word Daily. Made with</span>
             <Heart className="h-3 w-3 text-red-500 inline" />
             <span>for word enthusiasts.</span>
           </div>
@@ -57,4 +63,5 @@ const Footer = () => {
       </div>
     </footer>;
 };
+
 export default Footer;

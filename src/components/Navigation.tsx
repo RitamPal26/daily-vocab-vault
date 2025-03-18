@@ -1,16 +1,21 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Book, Calendar, Award, Menu, X } from 'lucide-react';
+import { Book, Calendar, Award, Menu, X, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { getStreakData, updateStreak } from '@/lib/streakUtils';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useIsMobile();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
-  const currentStreak = 5; // This would come from user data in a real app
+  const [streakData, setStreakData] = useState({ currentStreak: 0, highestStreak: 0 });
+  const [streakUpdated, setStreakUpdated] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,11 +24,35 @@ const Navigation = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Load streak data on initial render
+  useEffect(() => {
+    const data = getStreakData();
+    setStreakData({
+      currentStreak: data.currentStreak,
+      highestStreak: data.highestStreak
+    });
+  }, []);
+
+  // Update streak when navigating to the home page
+  useEffect(() => {
+    if (location.pathname === '/' && !streakUpdated) {
+      const updatedData = updateStreak();
+      setStreakData({
+        currentStreak: updatedData.currentStreak,
+        highestStreak: updatedData.highestStreak
+      });
+      setStreakUpdated(true);
+    }
+  }, [location.pathname, streakUpdated]);
+
   useEffect(() => {
     // Close mobile menu when route changes
     setIsMenuOpen(false);
   }, [location.pathname]);
+
   const isActive = (path: string) => location.pathname === path;
+
   const navItems = [{
     name: "Today's Word",
     path: '/',
@@ -37,6 +66,10 @@ const Navigation = () => {
     path: '/quiz',
     icon: <Award className="h-4 w-4" />
   }];
+
+  // Determine if the streak badge should pulse based on streak value
+  const shouldPulse = streakData.currentStreak >= 3;
+
   return <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? 'bg-background/80 backdrop-blur-md border-b' : 'bg-transparent'}`}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
@@ -46,10 +79,23 @@ const Navigation = () => {
         
         {isMobile ? <>
             <div className="flex items-center gap-4">
-              <Badge variant="outline" className="px-3 py-1 flex items-center gap-1">
-                <Award className="h-3.5 w-3.5" />
-                <span>Streak: {currentStreak}</span>
-              </Badge>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Badge 
+                    variant="outline" 
+                    className={`px-3 py-1 flex items-center gap-1 ${shouldPulse ? 'animate-pulse-subtle' : ''}`}
+                  >
+                    <Award className="h-3.5 w-3.5" />
+                    <span>Streak: {streakData.currentStreak}</span>
+                  </Badge>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <p>Your current streak</p>
+                  {streakData.highestStreak > 0 && (
+                    <p className="text-xs">Best: {streakData.highestStreak} days</p>
+                  )}
+                </TooltipContent>
+              </Tooltip>
               
               <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
                 {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -78,12 +124,26 @@ const Navigation = () => {
             
             <Separator orientation="vertical" className="h-6" />
             
-            <Badge variant="outline" className="px-3 py-1 flex items-center gap-1 animate-pulse-subtle">
-              <Award className="h-3.5 w-3.5" />
-              <span>Streak: {currentStreak}</span>
-            </Badge>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge 
+                  variant="outline" 
+                  className={`px-3 py-1 flex items-center gap-1 ${shouldPulse ? 'animate-pulse-subtle' : ''}`}
+                >
+                  <Award className="h-3.5 w-3.5" />
+                  <span>Streak: {streakData.currentStreak}</span>
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>Your current streak</p>
+                {streakData.highestStreak > 0 && (
+                  <p className="text-xs">Best: {streakData.highestStreak} days</p>
+                )}
+              </TooltipContent>
+            </Tooltip>
           </div>}
       </div>
     </header>;
 };
+
 export default Navigation;

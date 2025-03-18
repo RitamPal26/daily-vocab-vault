@@ -7,55 +7,50 @@ import WordArchive from '@/components/WordArchive';
 import SubmissionForm from '@/components/SubmissionForm';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import BadgeDisplay from '@/components/BadgeDisplay';
+import SocialShare from '@/components/SocialShare';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Share2, 
-  ChevronDown 
+  ChevronDown,
+  Award,
+  Trophy,
+  Flame
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { Card } from '@/components/ui/card';
+import { getStreakData, updateStreak } from '@/lib/streakUtils';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const { toast } = useToast();
+  const [streakData, setStreakData] = useState({
+    currentStreak: 0,
+    highestStreak: 0,
+    badges: [] as string[],
+    totalDaysPlayed: 0
+  });
   
   const todayWord = getTodayWord();
   const quizQuestions = getQuizQuestions(todayWord.id);
   const approvedSubmissions = getWordSubmissions(todayWord.id);
   const wordData = [getTodayWord(), ...Array(6).keys()].map((_, i) => getTodayWord());
   
+  // Initialize streak data on component mount
+  useEffect(() => {
+    // Update streak when visiting the home page
+    const updatedData = updateStreak();
+    setStreakData({
+      currentStreak: updatedData.currentStreak,
+      highestStreak: updatedData.highestStreak,
+      badges: updatedData.badges,
+      totalDaysPlayed: updatedData.totalDaysPlayed
+    });
+  }, []);
+  
   // Toggle section visibility
   const toggleSection = (section: string) => {
     setActiveSection(activeSection === section ? null : section);
-  };
-  
-  // Share functionality
-  const handleShare = () => {
-    const shareText = `I learned the word "${todayWord.word}" today: ${todayWord.definition} #LexiconDaily`;
-    
-    if (navigator.share) {
-      navigator.share({
-        title: 'Lexicon Daily - Word of the Day',
-        text: shareText,
-        url: window.location.href,
-      }).catch(() => {
-        // Fallback if share fails
-        copyToClipboard(shareText);
-      });
-    } else {
-      // Fallback for browsers that don't support sharing
-      copyToClipboard(shareText);
-    }
-  };
-  
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      toast({
-        title: "Copied to clipboard",
-        description: "Now you can paste and share it anywhere!",
-      });
-    });
   };
   
   return (
@@ -78,19 +73,49 @@ const Index = () => {
               </p>
             </div>
             
+            {/* Streak display */}
+            {streakData.currentStreak > 0 && (
+              <div className="mb-8 flex justify-center">
+                <div className="flex flex-col items-center">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-xl">
+                    <Card className="p-4 flex flex-col items-center justify-center">
+                      <Flame className="h-8 w-8 text-orange-500 mb-1" />
+                      <p className="text-muted-foreground text-xs">Current Streak</p>
+                      <p className="text-2xl font-bold">{streakData.currentStreak}</p>
+                    </Card>
+                    
+                    <Card className="p-4 flex flex-col items-center justify-center">
+                      <Trophy className="h-8 w-8 text-yellow-500 mb-1" />
+                      <p className="text-muted-foreground text-xs">Best Streak</p>
+                      <p className="text-2xl font-bold">{streakData.highestStreak}</p>
+                    </Card>
+                    
+                    <Card className="p-4 flex flex-col items-center justify-center">
+                      <Award className="h-8 w-8 text-blue-500 mb-1" />
+                      <p className="text-muted-foreground text-xs">Days Played</p>
+                      <p className="text-2xl font-bold">{streakData.totalDaysPlayed}</p>
+                    </Card>
+                  </div>
+                  
+                  {streakData.badges.length > 0 && (
+                    <div className="mt-4">
+                      <BadgeDisplay badges={streakData.badges} compact />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            
             <div className="mb-10">
               <WordCard word={todayWord} />
             </div>
             
             <div className="flex justify-center">
-              <Button
-                onClick={handleShare}
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                <Share2 className="h-4 w-4" />
-                <span>Share This Word</span>
-              </Button>
+              <SocialShare 
+                word={todayWord.word} 
+                definition={todayWord.definition}
+                compact
+              />
             </div>
           </div>
         </section>
@@ -186,6 +211,36 @@ const Index = () => {
             )}
           </div>
         </section>
+        
+        {/* Achievements section */}
+        {streakData.badges.length > 0 && (
+          <section className="py-12 px-4 bg-secondary/50">
+            <div className="container mx-auto max-w-3xl">
+              <div 
+                className="flex items-center justify-between cursor-pointer mb-6"
+                onClick={() => toggleSection('achievements')}
+              >
+                <h2 className="text-2xl font-serif font-bold">Your Achievements</h2>
+                <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${
+                  activeSection === 'achievements' ? 'transform rotate-180' : ''
+                }`} />
+              </div>
+              
+              {activeSection === 'achievements' && (
+                <div className="animate-fade-in">
+                  <BadgeDisplay badges={streakData.badges} />
+                  
+                  <div className="mt-8 flex justify-center">
+                    <SocialShare 
+                      word={todayWord.word}
+                      definition={todayWord.definition}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
       </main>
       
       <Footer />
