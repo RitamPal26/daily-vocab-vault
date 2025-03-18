@@ -1,26 +1,15 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Heart, 
-  Book,
-  Mail
-} from 'lucide-react';
+import { Facebook, Twitter, Instagram, Heart, Book, Mail } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
-  return (
-    <footer className="bg-secondary mt-16 py-12">
+  return <footer className="bg-secondary mt-16 py-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center gap-2 mb-6">
             <Book className="h-6 w-6" />
-            <h2 className="font-serif text-xl font-bold">Lexicon Daily</h2>
+            <h2 className="font-serif text-xl font-bold">Word Daily</h2>
           </div>
           
           <p className="text-muted-foreground max-w-md mb-8">
@@ -66,8 +55,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
