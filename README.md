@@ -9,7 +9,7 @@ A fun, interactive website to learn a new word every day! This project combines 
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/817ac956-dc98-4cf7-9f7a-2d3a72fd8624
+**URL**: [https://lovable.dev/projects/817ac956-dc98-4cf7-9f7a-2d3a72fd8624](https://daily-vocab-vault.lovable.app/)
 
 ## Overview
 
