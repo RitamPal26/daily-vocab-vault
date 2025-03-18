@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Facebook, Twitter, Instagram, Heart, Book, Mail, Trophy } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Heart, Book, Mail, Trophy, Github, Linkedin, Globe } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 const Footer = () => {
@@ -30,6 +30,30 @@ const Footer = () => {
             </Button>
             <Button variant="ghost" size="icon" aria-label="Email">
               <Mail className="h-5 w-5" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              aria-label="GitHub"
+              onClick={() => window.open('https://github.com/RitamPal26', '_blank')}
+            >
+              <Github className="h-5 w-5" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              aria-label="LinkedIn"
+              onClick={() => window.open('https://www.linkedin.com/in/ritam-pal-124175244/', '_blank')}
+            >
+              <Linkedin className="h-5 w-5" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              aria-label="Portfolio"
+              onClick={() => window.open('https://new-portfolio-lovat-one.vercel.app/', '_blank')}
+            >
+              <Globe className="h-5 w-5" />
             </Button>
           </div>
           

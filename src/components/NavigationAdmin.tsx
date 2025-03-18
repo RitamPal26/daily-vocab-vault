@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
@@ -18,6 +19,7 @@ import {
 import { useState, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 const NavigationAdmin = () => {
   const [activeLink, setActiveLink] = useState("/");
@@ -95,26 +97,30 @@ const NavigationAdmin = () => {
           </Badge>
         </Link>
         
-        {isMobile ? (
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right">
-              <div className="flex flex-col py-4 space-y-2">
-                <SheetClose asChild>
-                  <NavLinks />
-                </SheetClose>
-              </div>
-            </SheetContent>
-          </Sheet>
-        ) : (
-          <nav className="flex items-center space-x-1">
-            <NavLinks />
-          </nav>
-        )}
+        <div className="flex items-center space-x-2">
+          <ThemeSwitcher />
+          
+          {isMobile ? (
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right">
+                <div className="flex flex-col py-4 space-y-2">
+                  <SheetClose asChild>
+                    <NavLinks />
+                  </SheetClose>
+                </div>
+              </SheetContent>
+            </Sheet>
+          ) : (
+            <nav className="flex items-center space-x-1">
+              <NavLinks />
+            </nav>
+          )}
+        </div>
       </div>
     </header>
   );

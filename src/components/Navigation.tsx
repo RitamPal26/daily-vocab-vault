@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { getStreakData, updateStreak } from '@/lib/streakUtils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -79,6 +80,7 @@ const Navigation = () => {
         
         {isMobile ? <>
             <div className="flex items-center gap-4">
+              <ThemeSwitcher />
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Badge 
@@ -124,23 +126,27 @@ const Navigation = () => {
             
             <Separator orientation="vertical" className="h-6" />
             
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Badge 
-                  variant="outline" 
-                  className={`px-3 py-1 flex items-center gap-1 ${shouldPulse ? 'animate-pulse-subtle' : ''}`}
-                >
-                  <Award className="h-3.5 w-3.5" />
-                  <span>Streak: {streakData.currentStreak}</span>
-                </Badge>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">
-                <p>Your current streak</p>
-                {streakData.highestStreak > 0 && (
-                  <p className="text-xs">Best: {streakData.highestStreak} days</p>
-                )}
-              </TooltipContent>
-            </Tooltip>
+            <div className="flex items-center gap-4">
+              <ThemeSwitcher />
+              
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Badge 
+                    variant="outline" 
+                    className={`px-3 py-1 flex items-center gap-1 ${shouldPulse ? 'animate-pulse-subtle' : ''}`}
+                  >
+                    <Award className="h-3.5 w-3.5" />
+                    <span>Streak: {streakData.currentStreak}</span>
+                  </Badge>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <p>Your current streak</p>
+                  {streakData.highestStreak > 0 && (
+                    <p className="text-xs">Best: {streakData.highestStreak} days</p>
+                  )}
+                </TooltipContent>
+              </Tooltip>
+            </div>
           </div>}
       </div>
     </header>;
