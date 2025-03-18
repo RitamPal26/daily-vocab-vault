@@ -54,7 +54,13 @@ const WordSuggestionForm = () => {
     setIsSubmitting(true);
     
     try {
-      await addWordSuggestion(data);
+      // Make sure we pass all required fields with the correct types
+      await addWordSuggestion({
+        word: data.word,
+        definition: data.definition,
+        example: data.example,
+        submittedBy: data.submittedBy
+      });
       
       toast({
         title: "Thank you for your suggestion!",

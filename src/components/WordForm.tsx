@@ -54,10 +54,16 @@ const WordForm = ({ initialData, onSubmit, onCancel }: WordFormProps) => {
   });
 
   const handleSubmit = (values: FormValues) => {
+    // Create a new Word object with required properties
     const newWord: Word = {
       id: initialData?.id || Date.now().toString(),
       date: initialData?.date || new Date().toISOString().split('T')[0],
-      ...values,
+      word: values.word,
+      pronunciation: values.pronunciation,
+      partOfSpeech: values.partOfSpeech,
+      definition: values.definition,
+      example: values.example,
+      etymology: values.etymology,
     };
     
     setLoading(true);

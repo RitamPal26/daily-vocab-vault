@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
@@ -17,12 +16,12 @@ import {
   SheetClose
 } from '@/components/ui/sheet';
 import { useState, useEffect } from 'react';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
 
 const NavigationAdmin = () => {
   const [activeLink, setActiveLink] = useState("/");
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     setActiveLink(window.location.pathname);
