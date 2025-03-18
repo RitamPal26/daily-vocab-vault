@@ -1,4 +1,3 @@
-
 export interface Word {
   id: string;
   word: string;
@@ -28,7 +27,16 @@ export interface UserSubmission {
   date: string;
 }
 
-// A collection of sophisticated words for our daily words
+export interface WordSuggestion {
+  id: string;
+  word: string;
+  definition: string;
+  example: string;
+  submittedBy: string;
+  date: string;
+  status: 'pending' | 'approved' | 'rejected';
+}
+
 export const wordData: Word[] = [
   {
     id: "1",
@@ -53,7 +61,7 @@ export const wordData: Word[] = [
   {
     id: "3",
     word: "Ubiquitous",
-    pronunciation: "/yo͞oˈbikwədəs/",
+    pronunciation: "/yo͞uˈbikwədəs/",
     partOfSpeech: "adjective",
     definition: "Present, appearing, or found everywhere.",
     example: "Smartphones have become ubiquitous in modern society.",
@@ -163,19 +171,94 @@ export const userSubmissions: UserSubmission[] = [
   }
 ];
 
-// Helper function to get today's word
+export const wordSuggestions: WordSuggestion[] = [
+  {
+    id: "sug1",
+    word: "Petrichor",
+    definition: "The pleasant smell that accompanies the first rain after a dry spell.",
+    example: "After weeks of dry weather, the petrichor from the sudden downpour was invigorating.",
+    submittedBy: "Rain Lover",
+    date: "2023-06-15",
+    status: 'pending'
+  },
+  {
+    id: "sug2",
+    word: "Vellichor",
+    definition: "The strange wistfulness of used bookshops.",
+    example: "The vellichor of the old bookstore transported her to another time.",
+    submittedBy: "Book Enthusiast",
+    date: "2023-06-16",
+    status: 'pending'
+  }
+];
+
 export const getTodayWord = (): Word => {
-  // In a real app, this would be based on the current date
-  // For demo purposes, we're returning a fixed word
-  return wordData[0];
+  const today = new Date();
+  const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
+  
+  const index = dayOfYear % wordData.length;
+  
+  return wordData[index];
 };
 
-// Helper function to get quiz questions for a specific word
 export const getQuizQuestions = (wordId: string): QuizQuestion[] => {
   return quizData.filter(question => question.wordId === wordId);
 };
 
-// Helper function to get user submissions for a specific word
 export const getWordSubmissions = (wordId: string): UserSubmission[] => {
   return userSubmissions.filter(submission => submission.wordId === wordId && submission.approved);
+};
+
+export const addWord = (word: Word): Promise<Word> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(word);
+    }, 500);
+  });
+};
+
+export const addUserSubmission = (submission: Omit<UserSubmission, 'id' | 'date' | 'approved'>): Promise<UserSubmission> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newSubmission: UserSubmission = {
+        ...submission,
+        id: `s${Math.floor(Math.random() * 10000)}`,
+        date: new Date().toISOString().split('T')[0],
+        approved: false
+      };
+      
+      resolve(newSubmission);
+    }, 500);
+  });
+};
+
+export const addWordSuggestion = (suggestion: Omit<WordSuggestion, 'id' | 'date' | 'status'>): Promise<WordSuggestion> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newSuggestion: WordSuggestion = {
+        ...suggestion,
+        id: `sug${Math.floor(Math.random() * 10000)}`,
+        date: new Date().toISOString().split('T')[0],
+        status: 'pending'
+      };
+      
+      resolve(newSuggestion);
+    }, 500);
+  });
+};
+
+export const fetchWordDefinition = async (word: string): Promise<any> => {
+  try {
+    const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch word definition');
+    }
+    
+    const data = await response.json();
+    return data[0];
+  } catch (error) {
+    console.error('Error fetching word definition:', error);
+    throw error;
+  }
 };
