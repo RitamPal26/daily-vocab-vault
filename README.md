@@ -1,69 +1,37 @@
-# Welcome to your Lovable project
+# Word of the Day – Daily Vocabulary Builder
+
+A fun, interactive website to learn a new word every day! This project combines a Wordle-style guessing game with an engaging, educational interface, allowing users to improve their vocabulary through daily challenges without needing to sign up.
+
+![Screenshot (134)](https://github.com/user-attachments/assets/a77e1b8f-1ae8-4079-a247-904e958e2ef4)
+
+![Screenshot (135)](https://github.com/user-attachments/assets/24c65b77-74db-480d-b8f6-d51cf9278a7a)
+
 
 ## Project info
 
 **URL**: https://lovable.dev/projects/817ac956-dc98-4cf7-9f7a-2d3a72fd8624
 
-## How can I edit this code?
+## Overview
 
-There are several ways of editing your application.
+Word of the Day is a dynamic, user-friendly web application that:
 
-**Use Lovable**
+Displays a daily word card with its definition, pronunciation, and example sentence.
+Offers an interactive, Wordle-inspired guessing game.
+Tracks your daily learning streak using browser local storage (no login required!).
+Features a dark mode toggle for comfortable viewing in low-light conditions.
+Provides a backend CMS to manage and expand the vocabulary archive.
+Integrates the Free Dictionary API for dynamic word content.
+Allows users to suggest new words via a submission form.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/817ac956-dc98-4cf7-9f7a-2d3a72fd8624) and start prompting.
+## Features
 
-Changes made via Lovable will be committed automatically to this repo.
+Daily Word Challenge: Automatically selects a new word each day from a robust vocabulary archive.
+Interactive Guessing Game: Engage with a Wordle-style game to guess the word based on clues.
+Local Storage Tracking: Save and display your daily streak and progress without requiring an account.
+Dark Mode Toggle: Switch seamlessly between light and dark themes using CSS variables.
+Backend CMS: Easily add, edit, and manage word entries, including definitions, pronunciations, and examples.
+User Submissions: Allow visitors to suggest new words and contribute to the growing archive.
 
-**Use your preferred IDE**
+![Screenshot (136)](https://github.com/user-attachments/assets/b3f45d1a-28e0-4dc7-a37c-5be5503e6d2b)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/817ac956-dc98-4cf7-9f7a-2d3a72fd8624) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
